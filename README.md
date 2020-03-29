@@ -9,3 +9,4 @@ A visualisation for an A* pathfinder Algorithm
 
 3.solve bugs that happen when tring to change the width and the height after/during the animation
 
+![gif](./visualization/A*.gif)
