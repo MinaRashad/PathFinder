@@ -61,7 +61,6 @@ var transformData = (doubleArray)=>{
 	var nodeMap = new NodeMap();
 	for (let i = 0; i < doubleArray.length; i++) {
 		nodeMap.nodes.push([])
-		nodeMap.height+=1
 		for (let j = 0; j < doubleArray[i].length; j++) {
 			let node = new PositionNode()
 			node.state = doubleArray[i][j]
@@ -70,12 +69,13 @@ var transformData = (doubleArray)=>{
 			node.y=i;
 
 			nodeMap.nodes[i].push(node)
-			nodeMap.width+=1
 			if(doubleArray[i][j] == 'start') nodeMap.start=nodeMap.nodes[i][j]
 			else if(doubleArray[i][j] == 'end')nodeMap.end=nodeMap.nodes[i][j]
 			
 		}
 	}
+	nodeMap.height=nodeMap.nodes.length
+	nodeMap.width=nodeMap.nodes[0].length
 	return nodeMap
 }
 
@@ -90,7 +90,7 @@ function start()
 	var animation = setInterval(()=>
 	{
 		var closest = {f:Infinity}
-		debugger
+		// debugger
 
 		if(closedList.indexOf(nodeMap.end) == -1)
 		{
@@ -195,12 +195,14 @@ function NodeMap(){
 		adjacentPoses.push([x+1,y+1])
 		}
 		adjacent=[]
+		debugger
 		for (let i = 0; i < adjacentPoses.length; i++) {
-			if(adjacentPoses[i][1]<0 || adjacentPoses[i][1] > this.height) continue
-			if(adjacentPoses[i][0]<0 || adjacentPoses[i][0] > this.width)continue
+			let adjX = adjacentPoses[i][0]
+			let adjY = adjacentPoses[i][1]
+			if((adjY >= 0 && adjY < this.height) && (adjX>=0 && adjX < this.width))
 			// just making sure nodes are not out of bounds
 			// debugger
-			adjacent.push(this.nodes[ adjacentPoses[i][1] ][ adjacentPoses[i][0] ] )
+			adjacent.push(this.nodes[adjY][adjX] )
 			
 		}
 		return adjacent;
@@ -211,6 +213,7 @@ function colorThe(curntBlock,color='#f00')
 {
 	y = curntBlock.y
 	x = curntBlock.x
+	// debugger
 	target = tableElement.childNodes[0].childNodes[y].childNodes[x]
 	target.style.backgroundColor=color
 }
